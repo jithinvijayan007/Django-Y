@@ -22,9 +22,9 @@ def customer_list(request):
     elif request.method=="POST":
         print("Inside POST",request.data)
         # dict_salesdata=request.data
-        dat_serv_sale=request.data['dat_sale']
+        # dat_serv_sale=request.data['dat_sale']
         # dat_serv_sale=dat_serv_sale[:10]
-        print(" ",dat_serv_sale)
+        # print(" ",dat_serv_sale)
         dbl_serv_amount=request.data['dbl_amount']
         dbl_serv_service_charge=request.data['dbl_service_charge']
         dbl_serv_total=request.data['dbl_total']
@@ -38,7 +38,7 @@ def customer_list(request):
 
         ins_service = Services.objects.get(pk_bint_id=vchr_service)
         print(" ",ins_service)
-        print(dat_serv_sale)
+        # print(dat_serv_sale)
 
 
         if((request.data['vchr_name']=="") and (request.data['bint_mobile']=="")):
@@ -93,7 +93,7 @@ def customer_list(request):
 @api_view(['GET','POST'])
 def service_list(request):
     if request.method == 'GET':
-        print("getaaa")
+        # print("getaaa")
         ins_service = Services.objects.all()
         serializer=ServicesSerializer(ins_service,many=True)
         return Response({'data':serializer.data})
@@ -138,16 +138,18 @@ def data_detail(request):
          dbl_amount = request.data['dbl_amount']
          dbl_service_charge = request.data['dbl_service_charge']
          dbl_total = request.data['dbl_total']
+         # vchr_ref_no = request.data['vchr_ref_no']
          int_paid_status = request.data['int_paid_status']
          int_status = request.data['int_status']
          int_service_id = request.data['fk_service__pk_bint_id']
          ins_service = Services.objects.get(pk_bint_id = int_service_id)
          ins_sales = SalesData.objects.get(pk_bint_id = pk_bint_id)
 
-         
+
          ins_sales.dbl_amount = dbl_amount
          ins_sales.dbl_service_charge = dbl_service_charge
          ins_sales.dbl_total = dbl_total
+         # ins_sales.vchr_ref_no = vchr_ref_no
          ins_sales.int_paid_status = int_paid_status
          ins_sales.int_status = int_status
          ins_sales.fk_service = ins_service
@@ -156,9 +158,9 @@ def data_detail(request):
          if request.data['fk_customer__bint_mobile']:
             bint_phone = request.data['fk_customer__bint_mobile']
             ins_customer = Customer.objects.get(bint_mobile=bint_phone)
-            ins_customer.vchr_customer_name=request.data['fk_customer__vchr_name']
+            ins_customer.vchr_name=request.data['fk_customer__vchr_name']
             ins_customer.save()
-            print(ins_customer.vchr_customer_name)
+
             print("Name Updated")
             return Response("Updated Successfully")
 
